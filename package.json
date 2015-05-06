@@ -1,0 +1,23 @@
+{
+  "name": "reden",
+  "version": "1.0.0",
+  "description": "my test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/desktoping/user-resources-fanmsg"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/desktoping/user-resources-fanmsg/issues"
+  },
+  "homepage": "https://github.com/desktoping/user-resources-fanmsg",
+  "dependencies": {
+    "koa": "^0.20.0",
+    "mongoose": "^4.0.2"
+  }
+}
