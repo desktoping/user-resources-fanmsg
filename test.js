@@ -32,20 +32,32 @@ process.on('SIGINT', function() {
     process.exit(0);
   });
 });
-
+// initialize schema
 var Schema = mongoose.Schema;
-
+// create schema
 var users = new Schema({
   user:  String,
   pass: String
 });
-//var mod = mongoose.model('user2',users);
+// create user-defined function
+users.methods.speak = function () {
+  var greeting = this.name
+    ? "Meow name is " + this.name
+    : "I don't have a name"
+  console.log(greeting);
+}
 
-//mod.create({ size: 'small' }, function (err, small) {
-  //if (err) return handleError(err);
-  // saved!
-//})
- 
+// create model
+var nMod = mongoose.model('User', users);
+
+// create new instance of schema
+var nUser = new nMod({ user: 'Zildjian' },{ pass: '123' });
+nUser.save(function (err, nUser) {
+  if (err) return console.error(err);
+  nUser.speak();
+});
+
+
 var handler = function *(next){
     this.body = {'Welcome': 'This is a level 2 Hello World Application!!'};
 	// mongoose code to display current users lists
