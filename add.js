@@ -43,6 +43,11 @@ testRoute.get('/users/:user', function *(){
 	this.body = ''+data;
 });
 
+testRoute.get('/users/', function *(){
+   var data = yield Model.find();
+	this.body = ''+data;
+});
+
 
 testRoute.get('/', function *(){
 	this.body = ('Welcome use /users/ to add. /users/:user to find. /usersave/:user to update. /delete/:user to remove.');
