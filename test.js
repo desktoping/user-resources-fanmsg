@@ -4,10 +4,8 @@ var router = require('koa-router');
 var mount = require('koa-mount');
 var mongoose = require('mongoose');
 
-var db = 'mongodb://localhost/user';
-
 // Create the database connection
-mongoose.connect(db);
+var dbb = mongoose.connect('mongodb://localhost/user');
 
 // CONNECTION EVENTS
 // When successfully connected
@@ -32,6 +30,8 @@ process.on('SIGINT', function() {
     process.exit(0);
   });
 });
+
+
 // initialize schema
 var Schema = mongoose.Schema;
 // create schema
@@ -40,22 +40,26 @@ var users = new Schema({
   pass: String
 });
 // create user-defined function
-users.methods.speak = function () {
-  var greeting = this.name
-    ? "Meow name is " + this.name
-    : "I don't have a name"
-  console.log(greeting);
-}
+// users.methods.speak = function *(name) {
+  // var greeting = this.name;
+  // console.log(greeting);
+// }
 
 // create model
-var nMod = mongoose.model('User', users);
+var nMod = dbb.model('User', users);
+
+var tr2 = new nMod({user: 'rede',pass: 'gws'});
+    tr2.save(function (err, tr2) {
+		if (err) return console.error(err);
+		console.log('saved');
+	});
 
 // create new instance of schema
-var nUser = new nMod({ user: 'Zildjian' },{ pass: '123' });
-nUser.save(function (err, nUser) {
-  if (err) return console.error(err);
-  nUser.speak();
-});
+// var nUser = new nMod({user: 'Zildjian',pass: '123' });
+// nUser.save(function (err, nUser) {
+  // if (err) return console.error(err);
+  // nUser.speak(this.user);
+// });
 
 
 var handler = function *(next){
