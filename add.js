@@ -4,6 +4,8 @@ var app = koa();
 var mount = require('koa-mount');
 var router = require('koa-router');
 var mongoose = require('mongoose');
+var parser = require('body-parser');
+
 mongoose.connect('mongodb://localhost/user2');
 var query = "";
 
@@ -33,21 +35,38 @@ var callback = function (err, data) {
 		print(query);
 		console.log('end retieve.');
 };
-var handler = function *(next){
-    app.body = {'Welcome': 'This is a level 2 Hello World Application!!'};
-	console.log(app);
-	// mongoose code to display current users lists
-};
+
 
 //transforming page
-testRoute.get('/users', function *(){
-	this.body = ('Welcome2');
-    var data = yield Model.find({pass: '1234'});
-	console.log(data);
-	this.body = data;
+testRoute.get('/users/:user', function *(){
+   var data = yield Model.find(this.params);
+	this.body = ''+data;
 });
-testRoute.get('/index', handler);
-app.use(mount('/users', testRoute.middleware()));
+
+
+testRoute.get('/', function *(){
+	this.body = ('Welcome use /users/ to add. /users/:user to find. /usersave/:user to update. /delete/:user to remove.');
+});
+
+testRoute.get('/user', function *(){
+	var newUser = new Model({user: 'new',pass: 'old'});
+	newUser.save();
+	this.body = ('User new with password old is created.');
+});
+
+
+testRoute.get('/delete/:user', function *(){
+	yield Model.remove(this.params);
+	this.body = 'Successfully deleted '+this.params;
+});
+
+
+testRoute.get('/usersave/:user', function *(){
+	yield Model.update(this.params,{ pass: 'ww3'});
+	this.body = 'Password updated for '+this.params+' to ww3';
+});
+
+app.use(testRoute.routes());
 
 //creating page
 app.listen(8000);
