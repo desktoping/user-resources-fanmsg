@@ -5,6 +5,6 @@ var parser = require('koa-bodyparser');
 mongoose.connect('mongodb://localhost/user2');
 var usersController = require('./user-controller');
 app.use(parser());
-usersController(router);
 app.use(router.routes());
+usersController(router);
 app.listen(8000);

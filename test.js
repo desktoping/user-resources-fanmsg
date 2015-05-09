@@ -5,8 +5,8 @@ var mount = require('koa-mount');
 var mongoose = require('mongoose');
 
 // Create the database connection
-var dbb = mongoose.connect('mongodb://localhost/user');
-
+mongoose.connect('mongodb://localhost/user2');
+console.log('connecting');
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', function () {
@@ -46,13 +46,13 @@ var users = new Schema({
 // }
 
 // create model
-var nMod = dbb.model('User', users);
+var nMod = mongoose.model('user', users);
 
-var tr2 = new nMod({user: 'rede',pass: 'gws'});
-    tr2.save(function (err, tr2) {
-		if (err) return console.error(err);
-		console.log('saved');
-	});
+// var tr2 = new nMod({user: 'rede',pass: 'gws'});
+    // tr2.save(function (err, tr2) {
+		// if (err) return console.error(err);
+		// console.log('saved');
+	// });
 
 // create new instance of schema
 // var nUser = new nMod({user: 'Zildjian',pass: '123' });

@@ -3,10 +3,10 @@ var routeHandler = module.exports = {};
 
 routeHandler.testRoute = new router();
 
-routeHandler.findAlone() = function *(){
-	console.log(this);
-	var data = yield model.find(this.params);
-	this.body = ''+data;
+routeHandler.findAlone = function (model){
+	console.log(model);
+	// var data = model.find(this.params);
+	// this.body = ''+data;
 };
 
 routeHandler.findAll = function *(){
