@@ -1,4 +1,3 @@
-var router = require('koa-router');
 var User = require('./models/user');
 module.exports = function(router){
 	router.get('/users/', function *(){
