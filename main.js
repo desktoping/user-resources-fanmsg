@@ -1,4 +1,5 @@
 var app = require('koa')();
+var serve = require('koa-static');
 var mongoose = require('mongoose');
 var router = require('koa-router')();
 var parser = require('koa-bodyparser');
