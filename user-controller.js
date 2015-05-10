@@ -5,10 +5,9 @@ module.exports = function(router){
 		var html = jade.renderFile('main.jade');
 		this.body = html;
 	});
-	router.get('/users/', function *(){
+	router.get('/users', function *(){
 		var data = yield User.find();
-		this.body = ''+data;
-		var html = jade.renderFile('main.jade');
+		var html = jade.renderFile('find.jade',data);
 		this.body = html;
 	});
 	router.post('/users/', function *(){
