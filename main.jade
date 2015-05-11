@@ -1,23 +1,20 @@
 doctype html
-html(lang='en')
-  head
-    title Home
+head
+    title Welcom
+    |   
+    |   
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
   body
-    h1 Welcome.
-    div#add
-    p  Add new User
-    form(method='POST', action='/users')
-      input(type='text', name='user', placeholder='Username')
-      input(type='password', name='pass', placeholder='')
-      input(type='submit')
-    div#delete
-    p Delete User
-    form(method='delete', action='/users')
-    input(type='text', name='user', placeholder='Username')
-    input(type='submit')
-    div#update
-    p Update User
-    form(method='patch', action='/users')
-    input(type='text', name='user', placeholder='Username')
-    input(type='password', name='pass', placeholder='')
-    input(type='submit')
+  - for (var i=0; i<#{len}; i++)
+            div= #{user[i]}
+    table
+      tr
+        td #{user}
+        |       
+        td #{pass}
+      |     
+      |     
+      tr
+        td #{user[1]}
+        |       
+        td #{pass[2]}

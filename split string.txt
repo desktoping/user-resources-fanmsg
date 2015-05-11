@@ -1,0 +1,43 @@
+router.get('/', function *(){
+		var args= "";
+		var partsOfStr = "";
+		var passUser = "";
+		var passPassword = "";
+		var data = yield User.find({},function(err, obj) {                      
+			var fields = Object.keys(obj);
+			for(var i = 0; i < fields.length; i++) {
+				args =args +','+ obj[i];
+			}
+			
+			// splits the result by comma for better reading
+			var partsOfStr = args.split(',');
+			// counter for user and pass separation
+			var counter = 0;
+			var newString = "";
+			for(var i = 2; i < partsOfStr.length; i++) {
+				partsOfStr[i] = partsOfStr[i].replace(/\s+/, "");
+				partsOfStr[i] = partsOfStr[i].replace(/[^a-zA-Z0-9 ]/g, "");
+				if (counter < 2){
+					if(counter == 0){
+						newString = "";
+						newString = partsOfStr[i].substr(5,partsOfStr[i].length);
+						if(i==2){
+							passUser = newString;
+						}else{
+							passUser = passUser+','+newString;
+						}
+					}else{
+						newString = "";
+						newString = partsOfStr[i].substr(5, partsOfStr[i].length);
+						passPassword =passPassword+','+newString;
+					}
+					counter++;
+				}else
+					counter = 0;
+					newString = "";
+			}
+		});
+		var html = jade.renderFile('main.jade',{user: ['redeb','asadasd'], pass : passPassword});
+		this.body = html;
+		args = "";
+	});
