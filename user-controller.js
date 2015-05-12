@@ -85,16 +85,15 @@ module.exports = function(router){
 		var html = jade.renderFile('create.jade',this.request.body);
 		this.body = html;
 	});
-	router.delete('/users/:user', function *(){
+	router.delete('/users/:user&&pass', function *(){
 		console.log('here');
 		var data = yield User.remove(this.params);
 		var html = jade.renderFile('delete.jade',this.request.body);
 		this.body = html;
 	});
 	router.put('/users/:user', function *(){
-		console.log('patched');
-		var data = yield User.update(this.params,{ pass: 'changed'});
-		var html = jade.renderFile('update.jade',this.request.body);
-		this.body = html;
+		console.log(this.request);
+		//var data = yield User.update(this.params.user,{ pass: this.params.pass});
+		//this.body = html;
 	});
 };
