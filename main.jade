@@ -2,17 +2,19 @@ doctype html
 html
   head
     title Welcome
-    script(src='C:/Users/Betos/user-resources-fanmsg/jQuery.js')
+    script(src='C:/Users/Betos/user-resources-fanmsg/jQuery.js').
     script(type = "text/javascript").
       function updated(m){
-      var sub = $.ajax({
-      type: 'POST',
+      $.ajax({
+      type: 'PUT',
       dataType: 'json',
       url: "/users/",
       headers: {"X-HTTP-Method-Override": "PUT"},
       data: '{user: m}'
-      })(jQuery);
-      }
+      })
+      .done (function(data) { $('#ajaxDiv').html(data);})
+      .fail   (function()  { alert("Error"); })
+      };
       function deleted(m){
       alert(m);
       }
@@ -26,7 +28,7 @@ html
     span
       br
       br
-    div
+    div#ajaxDiv
     table
       thead
         tr
