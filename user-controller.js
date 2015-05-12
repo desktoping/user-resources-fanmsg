@@ -2,8 +2,8 @@ var jade = require('jade');
 var User = require('./models/user');
 module.exports = function(router){
 	router.get('/', function *(){
-		var newUser= ['1'];
-		var newPass= ['1'];
+		var newUser= [];
+		var newPass= [];
 		var data = yield User.find({},function(err,obj){
 			// splitting and assigning of string here
 			// this is a bit long and i hope i can find a shorter work around for this
@@ -22,7 +22,7 @@ module.exports = function(router){
 				}else
 					args = obj[i];
 			}
-			
+			args = args.toString();
 			// splits the result by comma for better reading
 			var partsOfStr = args.split(',');
 			// counter for ""user"" and ""pass"" distinction
@@ -32,23 +32,25 @@ module.exports = function(router){
 			var setterUser = 0;
 			var setterPass = 0;
 			
-			// newString becomes the comtainer of our proccessed string that will be imported to the
+			// newString becomes the container of our processed string that will be imported to the
 			// ""user"" and ""pass"" array.
 			var newString = "";
 			
 			// the magic begins here! :)
-			
-			for(var i = 1; i < partsOfStr.length; i++) {
+			for(var i = 0; i < partsOfStr.length; i++) {
+				console.log(partsOfStr[i]);
 				partsOfStr[i] = partsOfStr[i].replace(/\s+/, "");
 				partsOfStr[i] = partsOfStr[i].replace(/[^a-zA-Z0-9 ]/g, "");
 				// 0 == users ; 1 == password
-				if(counter % 3 == 0){
+				if(counter % 4 == 1){
+					console.log('Inserted to User');
 					newString = "";
 					newString = partsOfStr[i].substr(5,partsOfStr[i].length);
 					newUser[setterUser] = newString;
 					setterUser++;
 					counter++;
-				}else if(counter % 3 == 1){
+				}else if(counter % 4 == 2){
+					console.log('Inserted to Pass');
 					newString = "";
 					newString = partsOfStr[i].substr(5, partsOfStr[i].length);
 					newPass[setterPass] = newString;
@@ -56,6 +58,7 @@ module.exports = function(router){
 					counter++;
 				}else{
 					counter++;
+					console.log('Inserted to somewhere else.,');
 				}
 				newString = "";
 			}
@@ -64,18 +67,20 @@ module.exports = function(router){
 			setter = 0;
 			setterUser = 0;
 		});
-		console.log(newUser.length);
-   		var html = jade.renderFile('main.jade',{user : newUser,pass : newPass, len : newUser.length});
+   		var html = jade.renderFile('main.jade',{uzer : newUser,pass : newPass, len : newUser.length});
 		this.body = html;
 		args = "";
+		newUser = [];
+		newPass = [];
 	});
 	router.get('/users/:user', function *(){
-		var data = yield User.find();
-   		var html = jade.renderFile('find.jade',this.request.params);
+		var data = yield User.find({user : this.request.params});
+   		var html = jade.renderFile('find.jade',data);
 		this.body = html;
 	});
 	router.post('/users/', function *(){
 		var user = new User(this.request.body);
+		console.log(user);
 		var data = yield user.save();
 		var html = jade.renderFile('create.jade',this.request.body);
 		this.body = html;
@@ -86,7 +91,8 @@ module.exports = function(router){
 		var html = jade.renderFile('delete.jade',this.request.body);
 		this.body = html;
 	});
-	router.patch('/users/:user', function *(){
+	router.put('/users/:user', function *(){
+		console.log('patched');
 		var data = yield User.update(this.params,{ pass: 'changed'});
 		var html = jade.renderFile('update.jade',this.request.body);
 		this.body = html;

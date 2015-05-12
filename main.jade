@@ -1,20 +1,42 @@
 doctype html
-head
-    title Welcom
-    |   
-    |   
-    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
-  body
-  - for (var i=0; i<#{len}; i++)
-            div= #{user[i]}
+html
+  head
+    title Welcome
+    script(src='C:/Users/Betos/user-resources-fanmsg/jQuery.js')
+    script(type = "text/javascript").
+      function updated(m){
+      var sub = $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      url: "/users/",
+      headers: {"X-HTTP-Method-Override": "PUT"},
+      data: '{user: m}'
+      })(jQuery);
+      }
+      function deleted(m){
+      alert(m);
+      }
+  body      
+    div
+      span Create new User
+      form(method='POST', action='users/' content-type = 'application/x-www-form-urlencoded')
+        input(name='user', type='text', placeholder='Username')
+        input(name='pass', type='pass')
+        button(type='submit') Create
+    span
+      br
+      br
+    div
     table
-      tr
-        td #{user}
-        |       
-        td #{pass}
-      |     
-      |     
-      tr
-        td #{user[1]}
-        |       
-        td #{pass[2]}
+      thead
+        tr
+          th View Users
+      tbody
+      each users , i in uzer
+        tr
+          td
+            select#upDel.pulldown(name=''+users, onfocus="this.selectedIndex = -1;" onchange="this.value == 'Update' ? updated(this.name) : deleted(this.name)")
+              option(value="Update") Update
+              option(value = "Delete") Delete
+            label#us #{users}
+            label#pa - #{pass[i]}
