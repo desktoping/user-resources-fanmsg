@@ -1,11 +1,13 @@
 var app = require('koa')();
-var serve = require('koa-static');
 var mongoose = require('mongoose');
 var router = require('koa-router')();
 var parser = require('koa-bodyparser');
-mongoose.connect('mongodb://localhost/user2');
+var passport = require('koa-passport');
+require('./config/passport')(passport); 
+app.use(passport.initialize());
+mongoose.connect('mongodb://localhost/facebook');
 var usersController = require('./user-controller');
 app.use(parser());
 app.use(router.routes());
-usersController(router);
+usersController(router,passport);
 app.listen(8000);

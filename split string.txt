@@ -41,3 +41,6 @@ router.get('/', function *(){
 		this.body = html;
 		args = "";
 	});
+	
+	
+	https://scotch.io/tutorials/easy-node-authentication-setup-and-local

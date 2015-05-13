@@ -1,7 +1,20 @@
 var jade = require('jade');
 var User = require('./models/user');
-module.exports = function(router){
+module.exports = function(router,passport){
+	router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+	router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect : '/user',
+        failureRedirect : '/fail'
+    }));
+	router.get('/fail', function *(){
+		var html = jade.renderFile('/templates/failAuth.jade');
+		this.body = html;
+	});
 	router.get('/', function *(){
+		var html = jade.renderFile('templates/index.jade');
+		this.body = html;
+	});
+	router.get('/user', function *(){
 		var newUser= [];
 		var newPass= [];
 		var data = yield User.find({},function(err,obj){
@@ -63,7 +76,7 @@ module.exports = function(router){
 			setter = 0;
 			setterUser = 0;
 		});
-   		var html = jade.renderFile('main.jade',{uzer : newUser,pass : newPass, len : newUser.length});
+   		var html = jade.renderFile('templates/main.jade',{uzer : newUser,pass : newPass, len : newUser.length});
 		this.body = html;
 		args = "";
 		newUser = [];
@@ -71,26 +84,26 @@ module.exports = function(router){
 	});
 	router.get('/users/:user', function *(){
 		var data = yield User.find({user : this.request.params});
-   		var html = jade.renderFile('find.jade',data);
+   		var html = jade.renderFile('templates/main.jade',data);
 		this.body = html;
 	});
 	router.post('/users/', function *(){
 		var user = new User(this.request.body);
 		console.log(user);
 		var data = yield user.save();
-		var html = jade.renderFile('create.jade',this.request.body);
+		var html = jade.renderFile('templates/main.jade',this.request.body);
 		this.body = html;
 	});
 	router.delete('/users/:user', function *(){
 		console.log('here');
 		var data = yield User.remove(this.params);
-		var html = jade.renderFile('delete.jade',this.request.body);
+		var html = jade.renderFile('templates/main.jade',this.request.body);
 		this.body = html;
 	});
 	router.put('/users/:user/:pass', function *(){
 		console.log(this.params.user);
         var data = yield User.update(this.params.user,{ pass: this.params.pass});
-		var html = jade.renderFile('main.jade',this.request.body);
+		var html = jade.renderFile('templates/main.jade',this.request.body);
 		this.body = html;
 
 	});
