@@ -38,19 +38,16 @@ module.exports = function(router){
 			
 			// the magic begins here! :)
 			for(var i = 0; i < partsOfStr.length; i++) {
-				console.log(partsOfStr[i]);
 				partsOfStr[i] = partsOfStr[i].replace(/\s+/, "");
 				partsOfStr[i] = partsOfStr[i].replace(/[^a-zA-Z0-9 ]/g, "");
 				// 0 == users ; 1 == password
 				if(counter % 4 == 1){
-					console.log('Inserted to User');
 					newString = "";
 					newString = partsOfStr[i].substr(5,partsOfStr[i].length);
 					newUser[setterUser] = newString;
 					setterUser++;
 					counter++;
 				}else if(counter % 4 == 2){
-					console.log('Inserted to Pass');
 					newString = "";
 					newString = partsOfStr[i].substr(5, partsOfStr[i].length);
 					newPass[setterPass] = newString;
@@ -58,7 +55,6 @@ module.exports = function(router){
 					counter++;
 				}else{
 					counter++;
-					console.log('Inserted to somewhere else.,');
 				}
 				newString = "";
 			}
@@ -85,15 +81,17 @@ module.exports = function(router){
 		var html = jade.renderFile('create.jade',this.request.body);
 		this.body = html;
 	});
-	router.delete('/users/:user&&pass', function *(){
+	router.delete('/users/:user', function *(){
 		console.log('here');
 		var data = yield User.remove(this.params);
 		var html = jade.renderFile('delete.jade',this.request.body);
 		this.body = html;
 	});
-	router.put('/users/:user', function *(){
-		console.log(this.request);
-		//var data = yield User.update(this.params.user,{ pass: this.params.pass});
-		//this.body = html;
+	router.put('/users/:user/:pass', function *(){
+		console.log(this.params.user);
+        var data = yield User.update(this.params.user,{ pass: this.params.pass});
+		var html = jade.renderFile('main.jade',this.request.body);
+		this.body = html;
+
 	});
 };

@@ -6,19 +6,32 @@ html
     script(type = "text/javascript").
       function updated(m){
       var pS = prompt("Enter Password");
+      if(pS != null){
       $.ajax({
       type: 'PUT',
       dataType: 'html',
-      url: "/users/"+m+"&&"+pS,
+      url: "/users/"+m+"/"+pS,
       headers: {"X-HTTP-Method-Override": "PUT"},
       data: '{user: m,pass : pS}'
       })
       .done (function(data) { alert(m+' updated!')})
       .fail   (function(jqXHR, textStatus, errorThrown)  { alert(errorThrown); })
+      location.reload();
+      }else{
+      return;
+      }      
       };
       function deleted(m){
-      alert(m);
-      }
+      $.ajax({
+      type: 'DELETE',
+      dataType: 'html',
+      url: "/users/"+m,
+      data: '{user: m}'
+      })
+      .done (function(data) { alert('User deleted. Bye-bye!')})
+      .fail   (function(jqXHR, textStatus, errorThrown)  { alert(errorThrown); })
+      location.reload();
+      };
   body      
     div
       span Create new User
