@@ -44,3 +44,5 @@ router.get('/', function *(){
 	
 	
 	https://scotch.io/tutorials/easy-node-authentication-setup-and-local
+	
+	https://scotch.io/tutorials/easy-node-authentication-setup-and-local
