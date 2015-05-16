@@ -5,21 +5,8 @@ html
     script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js').
     script(type = "text/javascript").
       function updated(m){
-      var pS = prompt("Enter Password");
-      if(pS != null){
-      $.ajax({
-      type: 'PUT',
-      dataType: 'html',
-      url: "/users/"+m+"/"+pS,
-      headers: {"X-HTTP-Method-Override": "PUT"},
-      data: '{user: m,pass : pS}'
-      })
-      .done (function(data) { alert(m+' updated!')})
-      .fail   (function(jqXHR, textStatus, errorThrown)  { alert(errorThrown); })
-      location.reload();
-      }else{
-      return;
-      }      
+      alert("Require Authority");
+      document.location.href = '/login';
       };
       function deleted(m){
       $.ajax({

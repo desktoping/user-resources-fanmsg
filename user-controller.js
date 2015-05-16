@@ -1,20 +1,11 @@
 var jade = require('jade');
 var User = require('./models/user');
-module.exports = function(router,passport){
-	router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-	router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect : '/user',
-        failureRedirect : '/fail'
-    }));
-	router.get('/fail', function *(){
-		var html = jade.renderFile('/templates/failAuth.jade');
+module.exports = function(router){
+	router.get('/login', function *(){
+		var html = jade.renderFile('templates/login.jade');
 		this.body = html;
 	});
 	router.get('/', function *(){
-		var html = jade.renderFile('templates/index.jade');
-		this.body = html;
-	});
-	router.get('/user', function *(){
 		var newUser= [];
 		var newPass= [];
 		var data = yield User.find({},function(err,obj){
@@ -89,16 +80,14 @@ module.exports = function(router,passport){
 	});
 	router.post('/users/', function *(){
 		var user = new User(this.request.body);
-		console.log(user);
 		var data = yield user.save();
-		var html = jade.renderFile('templates/main.jade',this.request.body);
+		var html = jade.renderFile('templates/create.jade',this.request.body);
 		this.body = html;
 	});
 	router.delete('/users/:user', function *(){
 		console.log('here');
 		var data = yield User.remove(this.params);
-		var html = jade.renderFile('templates/main.jade',this.request.body);
-		this.body = html;
+		this.body = "";
 	});
 	router.put('/users/:user/:pass', function *(){
 		console.log(this.params.user);

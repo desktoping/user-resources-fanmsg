@@ -22,8 +22,8 @@ app.oauth = oauthserver({
   debug: true
 });
 
-// Mount `oauth2` route prefix.
-app.use(mount('/oauth2', router.middleware()));
+model.dump();
+
 
 // Register `/token` POST path on oauth router (i.e. `/oauth2/token`).
 router.post('/token', app.oauth.grant());

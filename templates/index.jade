@@ -1,8 +1,58 @@
 doctype html
-html(lang='en')
+html
   head
-    title Facebook Auth
-  body
-    .container
-      p Login or Register with:
-      a(href='/auth/facebook') Facebook
+    title Welcome
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js').
+    script(type = "text/javascript").
+      function updated(m){
+      var pS = prompt("Enter Password");
+      if(pS != null || pS != ""){
+      $.ajax({
+      type: 'PUT',
+      dataType: 'html',
+      url: "/users/"+m+"/"+pS,
+      headers: {"X-HTTP-Method-Override": "PUT"},
+      data: '{user: m,pass : pS}'
+      })
+      .done (function(data) { alert(m+' updated!')})
+      .fail   (function(jqXHR, textStatus, errorThrown)  { alert(errorThrown); })
+      location.reload();
+      }else{
+      return;
+      }      
+      };
+      function deleted(m){
+      $.ajax({
+      type: 'DELETE',
+      dataType: 'html',
+      url: "/users/"+m,
+      data: '{user: m}'
+      })
+      .done (function(data) { alert('User deleted. Bye-bye!')})
+      .fail   (function(jqXHR, textStatus, errorThrown)  { alert(errorThrown); })
+      location.reload();
+      };
+  body      
+    div
+      span Create new User
+      form(method='POST', action='users/' content-type = 'application/x-www-form-urlencoded')
+        input(name='user', type='text', placeholder='Username')
+        input(name='pass', type='pass')
+        button(type='submit') Create
+    span
+      br
+      br
+    div#ajaxDiv
+    table
+      thead
+        tr
+          th View Users
+      tbody
+      each users , i in uzer
+        tr
+          td
+            select#upDel.pulldown(name=''+users, onfocus="this.selectedIndex = -1;" onchange="this.value == 'Update' ? updated(this.name) : deleted(this.name)")
+              option(value="Update") Update
+              option(value = "Delete") Delete
+            label#us #{users}
+            label#pa - #{pass[i]}
